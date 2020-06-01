@@ -31,10 +31,15 @@ pip3 install virtualenv
 source venv/bin/activate
 ```
 # pre-requirements
-```
+
 nano secrets.py
 then type "pw = XXXXX"
 where XXXXX is your real password
+
+```python
+gituser = "tomsmith"
+gitpw = "supersecretpassword"
+gitCopyFollowers = "tomscode"
 ```
 
 # running the code
