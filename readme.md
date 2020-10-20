@@ -7,8 +7,12 @@ Github bot to follow developers how are likely to follow you back
 Github bot build with python and selenium to follow developers how are likely to follow you back. 
 
 a simple check is done to see if the user is active before following
+- if half the number of followers is less than the amount of following
 - does the user have more than 1 pinned project
 - does the user have some activity for the month
+
+with the above it becomes more posible to get a follow back
+
 
 # Requirments
 install selenium
