@@ -83,7 +83,6 @@ class GithubBot:
 
     def activeOnGithub(self,follower):
         #check if the users from the ratio are active on github ifnot then there is really no point in following
-        self.driver.get(follower)
         sleep(randint(4, 14))
 
         try:
@@ -109,19 +108,23 @@ class GithubBot:
 
     def followThisUser(self,follower):
         #click the follow button if this is a good match
-        self.driver.get(follower)
         sleep(randint(4, 14))
 
         try:
             print("Following......")
-            input = self.driver.find_element_by_xpath('//input[@value="Follow"]')
-            inputParent = input.find_element_by_xpath('..')
+            follow_button = self.driver.find_element_by_xpath('//input[@value="Follow"]')
+            # follow_button = self.driver.find_elements_by_xpath("//input[@aria-label='Follow this person']")
+            inputParent = follow_button.find_element_by_xpath('..')
+            inputParent.submit()
             
-            print(inputParent.get_attribute('hidden') )
-            if inputParent.get_attribute('hidden') == None:
-                input.click()
-            else:
-                print('you are already folloing them')
+            # checking if you already follow does not work
+            # print('Follow button : '+inputParent.get_attribute('hidden') )
+            # if inputParent.get_attribute('hidden') == None:
+            #     print('Submit clicked !')
+            #     inputParent.submit()
+
+            # else:
+            #     print('you are already folloing them')
 
             return True
 
