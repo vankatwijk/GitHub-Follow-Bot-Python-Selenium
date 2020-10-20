@@ -71,6 +71,7 @@ class GithubBot:
                     print(isActive)
                     if isActive == True:
                         print('User is Active')
+                        self.followThisUser(follower)
                         temp.append(follower)
 
 
@@ -108,7 +109,29 @@ class GithubBot:
             print("can't activities and pined")
             return False
 
+    def followThisUser(self,follower):
+        #click the follow button if this is a good match
+        self.driver.get(follower)
+        sleep(randint(4, 14))
 
+        try:
+            print("Following......")
+            input = self.driver.find_element_by_xpath('//input[@value="Follow"]')
+            inputParent = input.find_element_by_xpath('..')
+            
+            print(inputParent.get_attribute('hidden') )
+            if inputParent.get_attribute('hidden') == None:
+                input.click()
+            else:
+                print('you are already folloing them')
+
+            return True
+
+        except:
+            print("can't click follow button")
+            return False
+
+        
 
 my_bot = GithubBot(gituser,gitpw,gitCopyFollowers)
 my_bot.copy_followers()
