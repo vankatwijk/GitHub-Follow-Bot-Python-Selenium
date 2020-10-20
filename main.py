@@ -1,9 +1,7 @@
 from selenium import webdriver
 from time import sleep
 from random import randint
-from secrets import gituser
-from secrets import gitpw
-from secrets import gitCopyFollowers
+from secrets import *
 
 
 class GithubBot:
@@ -106,7 +104,7 @@ class GithubBot:
             return False
 
         except:
-            print("can't activities and pined")
+            print("can't get activities and pinned projects")
             return False
 
     def followThisUser(self,follower):
