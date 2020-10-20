@@ -44,8 +44,10 @@ class GithubBot:
         self.followers = (list(list_set))
         print(self.followers)
 
-    def match_followers(self):
+    def followersRatio(self):
+        #number of follers to following , if this user does not follow many users back there is no point in following
         #here we will determin if this is a good person to follow from the above list
+        temp = []
 
         for follower in self.followers:
             self.driver.get(follower)
@@ -64,11 +66,16 @@ class GithubBot:
                 if numFollowing > halfFollowers:
                     print(follower)
                     print('lets follow')
+                    temp.append(follower)
 
             except:
                 print("can't get the total amount of followers")
+    
+        list_set = set(temp)
+        self.followersRatio = (list(list_set))
+
 
 
 my_bot = GithubBot(gituser,gitpw,gitCopyFollowers)
 my_bot.copy_followers()
-my_bot.match_followers()
+my_bot.followersRatio()
