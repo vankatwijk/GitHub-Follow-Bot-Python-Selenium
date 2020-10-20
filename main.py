@@ -51,22 +51,29 @@ class GithubBot:
 
         for follower in self.followers:
             self.driver.get(follower)
-            sleep(randint(6, 10))
+            sleep(randint(8, 14))
 
+            print('--------------------------------------')
             try:
                 #get the number of followers
                 numFollowers = self.driver.find_elements_by_xpath('//*[@id="js-pjax-container"]/div[2]/div/div[1]/div/div[4]/div[2]/div/div/a[1]/span')
                 numFollowing = self.driver.find_elements_by_xpath('//*[@id="js-pjax-container"]/div[2]/div/div[1]/div/div[4]/div[2]/div/div/a[2]/span')
-                print(numFollowers[0].text)
-                print(numFollowing[0].text)
+                print('Followers : ' + numFollowers[0].text)
+                print('Following : ' + numFollowing[0].text)
 
                 #convert to number and check if half the follers is less than the following
                 halfFollowers = int(numFollowers[0].text) / 2
 
                 if numFollowing > halfFollowers:
                     print(follower)
-                    print('lets follow')
-                    temp.append(follower)
+                    print('follower ratio good')
+                    isActive = self.activeOnGithub(follower)
+                    print(isActive)
+                    if isActive == True:
+                        print('User is Active')
+                        temp.append(follower)
+
+
 
             except:
                 print("can't get the total amount of followers")
@@ -75,39 +82,34 @@ class GithubBot:
         self.followersRatio = (list(list_set))
 
 
-    def activeOnGithub(self):
+    def activeOnGithub(self,follower):
         #check if the users from the ratio are active on github ifnot then there is really no point in following
-        temp = []
+        self.driver.get(follower)
+        sleep(randint(4, 14))
 
-        for follower in self.followersRatio:
-            self.driver.get(follower)
-            sleep(randint(4, 14))
+        try:
+            #get the number of followers
+            numberOfPinned = len(self.driver.find_elements_by_xpath('//*[@id="js-pjax-container"]/div[2]/div/div[2]/div[2]/div/div[1]/div/ol/li[1]'))
+            numberOfActivities = len(self.driver.find_elements_by_class_name('profile-rollup-wrapper'))
+            print(numberOfPinned)
+            print(numberOfActivities)
 
-            try:
-                #get the number of followers
-                numberOfPinned = len(self.driver.find_elements_by_xpath('//*[@id="js-pjax-container"]/div[2]/div/div[2]/div[2]/div/div[1]/div/ol/li[1]'))
-                numberOfActivities = len(self.driver.find_elements_by_class_name('profile-rollup-wrapper'))
-                print(numberOfPinned)
-                print(numberOfActivities)
+            #if number of pinned projects 1 or more
+            if numberOfPinned >= 1:
+                #if activites for the month greater than 1
+                if numberOfActivities  >= 1:
+                    return True
+            
 
-                #if number of pinned projects 1 or more
-                if numberOfPinned >= 1
-                    #if activites for the month greater than 1
-                    if numberOfActivities  >= 1
-                        print('Activites good, lets follow')
+            print('User is not Active')
+            return False
 
-            except:
-                print("can't activities and pined")
-    
-        list_set = set(temp)
-        self.followersRatio = (list(list_set))
-
-
-
+        except:
+            print("can't activities and pined")
+            return False
 
 
 
 my_bot = GithubBot(gituser,gitpw,gitCopyFollowers)
 my_bot.copy_followers()
 my_bot.followersRatio()
-my_bot.activeOnGithub()
